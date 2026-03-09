@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "apiaberta"
+version = "1.0.0"
+description = "Python SDK for API Aberta — Portuguese public data API"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "API Aberta", email = "dev@apiaberta.pt" }]
+keywords = ["portugal", "api", "open-data", "fuel", "weather", "ipma", "sdk"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+]
+requires-python = ">=3.8"
+dependencies = ["requests>=2.28"]
+
+[project.urls]
+Homepage = "https://apiaberta.pt"
+Repository = "https://github.com/apiaberta/apiaberta-py"
+Documentation = "https://apiaberta.pt/docs/sdk"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["apiaberta*"]
