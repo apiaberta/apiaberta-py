@@ -9,7 +9,7 @@ import os
 from typing import Any, Dict, Optional
 from urllib.parse import urlencode
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 DEFAULT_BASE_URL = "https://api.apiaberta.pt/v1"
 
 
@@ -264,6 +264,46 @@ class ApiAberta:
             "page": page,
             "limit": limit,
         })
+
+    # ── Banco de Portugal (BdP) ───────────────────────────────────────────────
+
+    def bdp_rates(self) -> Dict:
+        """
+        Get ECB key interest rates and Euro Short-Term Rate (€STR).
+
+        Includes MRO, deposit facility, marginal lending facility, and €STR,
+        sourced from Banco de Portugal BPstat.
+
+        Returns
+        -------
+        dict
+            ``{"source": ..., "count": ..., "data": [...]}``
+        """
+        return self._fetch("/bdp/rates")
+
+    def bdp_lending_rates(self) -> Dict:
+        """
+        Get bank lending and deposit rates in Portugal.
+
+        Includes housing loans, consumer credit, other loans, and term deposit rates.
+
+        Returns
+        -------
+        dict
+            ``{"source": ..., "count": ..., "data": [...]}``
+        """
+        return self._fetch("/bdp/lending-rates")
+
+    def bdp_meta(self) -> Dict:
+        """
+        Get connector-bdp metadata and full series catalogue.
+
+        Returns
+        -------
+        dict
+            ``{"service": ..., "endpoints": [...], "series_catalogue": [...]}``
+        """
+        return self._fetch("/bdp/meta")
 
     # ── Platform ──────────────────────────────────────────────────────────────
 

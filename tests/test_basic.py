@@ -55,5 +55,19 @@ class TestApiAbertaErrors(unittest.TestCase):
         self.assertEqual(ctx.exception.status_code, 400)
 
 
+class TestBdpMethods(unittest.TestCase):
+    def test_bdp_rates_method_exists(self):
+        api = ApiAberta()
+        self.assertTrue(callable(api.bdp_rates))
+
+    def test_bdp_lending_rates_method_exists(self):
+        api = ApiAberta()
+        self.assertTrue(callable(api.bdp_lending_rates))
+
+    def test_bdp_meta_method_exists(self):
+        api = ApiAberta()
+        self.assertTrue(callable(api.bdp_meta))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
