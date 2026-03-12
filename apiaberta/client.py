@@ -9,7 +9,7 @@ import os
 from typing import Any, Dict, Optional
 from urllib.parse import urlencode
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 DEFAULT_BASE_URL = "https://api.apiaberta.pt/v1"
 
 
@@ -304,6 +304,98 @@ class ApiAberta:
             ``{"service": ..., "endpoints": [...], "series_catalogue": [...]}``
         """
         return self._fetch("/bdp/meta")
+
+    # ── Geographic Data (geoapi.pt) ───────────────────────────────────────────
+
+    def geo_districts(self, geojson: bool = False) -> Dict:
+        """
+        List all Portuguese districts.
+
+        Parameters
+        ----------
+        geojson : bool, optional
+            Include GeoJSON geometry (default False).
+        """
+        params: Dict[str, Any] = {}
+        if geojson:
+            params["geojson"] = "true"
+        return self._fetch("/geo/districts", params or None)
+
+    def geo_district(self, codigoine: str) -> Dict:
+        """
+        Get a single district by codigoine.
+
+        Parameters
+        ----------
+        codigoine : str
+            District code (e.g. "11" for Lisboa).
+        """
+        if not codigoine:
+            raise ApiAbertaError("codigoine is required", 400)
+        return self._fetch(f"/geo/districts/{codigoine}")
+
+    def geo_municipalities(
+        self,
+        district: Optional[str] = None,
+        page: int = 1,
+        limit: int = 50,
+    ) -> Dict:
+        """
+        List municipalities, optionally filtered by district name.
+
+        Parameters
+        ----------
+        district : str, optional
+            Filter by district name (e.g. "Lisboa").
+        page : int, optional
+            Page number (default 1).
+        limit : int, optional
+            Results per page (default 50, max 308).
+        """
+        params: Dict[str, Any] = {"page": page, "limit": limit}
+        if district:
+            params["district"] = district
+        return self._fetch("/geo/municipalities", params)
+
+    def geo_municipality(self, slug: str) -> Dict:
+        """
+        Get a single municipality by slug (e.g. "lisboa", "porto").
+
+        Parameters
+        ----------
+        slug : str
+            Municipality slug.
+        """
+        if not slug:
+            raise ApiAbertaError("slug is required", 400)
+        return self._fetch(f"/geo/municipalities/{slug}")
+
+    def geo_parishes(self, slug: str) -> Dict:
+        """
+        Get all parishes of a municipality.
+
+        Parameters
+        ----------
+        slug : str
+            Municipality slug.
+        """
+        if not slug:
+            raise ApiAbertaError("slug is required", 400)
+        return self._fetch(f"/geo/municipalities/{slug}/parishes")
+
+    def geo_postal(self, code: str) -> Dict:
+        """
+        Lookup a Portuguese postal code (format XXXX-XXX).
+
+        Parameters
+        ----------
+        code : str
+            Postal code string (e.g. "1000-001").
+        """
+        if not code:
+            raise ApiAbertaError("code is required", 400)
+        from urllib.parse import quote
+        return self._fetch(f"/geo/postal/{quote(code, safe='')}")
 
     # ── Platform ──────────────────────────────────────────────────────────────
 

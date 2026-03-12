@@ -69,5 +69,49 @@ class TestBdpMethods(unittest.TestCase):
         self.assertTrue(callable(api.bdp_meta))
 
 
+class TestGeoMethods(unittest.TestCase):
+    def test_geo_districts_method_exists(self):
+        api = ApiAberta()
+        self.assertTrue(callable(api.geo_districts))
+
+    def test_geo_district_method_exists(self):
+        api = ApiAberta()
+        self.assertTrue(callable(api.geo_district))
+
+    def test_geo_municipalities_method_exists(self):
+        api = ApiAberta()
+        self.assertTrue(callable(api.geo_municipalities))
+
+    def test_geo_municipality_method_exists(self):
+        api = ApiAberta()
+        self.assertTrue(callable(api.geo_municipality))
+
+    def test_geo_parishes_method_exists(self):
+        api = ApiAberta()
+        self.assertTrue(callable(api.geo_parishes))
+
+    def test_geo_postal_method_exists(self):
+        api = ApiAberta()
+        self.assertTrue(callable(api.geo_postal))
+
+    def test_geo_district_without_id_raises(self):
+        api = ApiAberta()
+        with self.assertRaises(ApiAbertaError) as ctx:
+            api.geo_district("")
+        self.assertEqual(ctx.exception.status_code, 400)
+
+    def test_geo_municipality_without_slug_raises(self):
+        api = ApiAberta()
+        with self.assertRaises(ApiAbertaError) as ctx:
+            api.geo_municipality("")
+        self.assertEqual(ctx.exception.status_code, 400)
+
+    def test_geo_postal_without_code_raises(self):
+        api = ApiAberta()
+        with self.assertRaises(ApiAbertaError) as ctx:
+            api.geo_postal("")
+        self.assertEqual(ctx.exception.status_code, 400)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

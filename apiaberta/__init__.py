@@ -3,4 +3,4 @@
 from .client import ApiAberta, ApiAbertaError
 
 __all__ = ["ApiAberta", "ApiAbertaError"]
-__version__ = "1.0.0"
+__version__ = "1.2.0"
